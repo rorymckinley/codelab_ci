@@ -43,3 +43,17 @@ Ideas
 * The hook should call out to our workbench-hook gem, which itself calls out to
   our workbench-validator gem. Gem names need to be sexier.
 
+Git-hooks
+---------
+
+* Looks like the post-receive hook is better suited for our purposes than the
+  update hook. The update hook fires once per ref being pushed --> e.g. once
+  for the branch and once for the tag (the tag does not travel with the branch).
+  This makes the hook logic as follows:
+  * Get refs from STDIN
+  * Check if one of the refs passed is refs/tags/ci
+  * If it is pick the new shas from the branches pushed (refs/heads) and check
+    each one to see if the tag contains it, using something like 
+    system("git tag --contains #{new_sha} | grep ci")
+  * If the new sha is contained by the tag, then pass it on to the validator
+
