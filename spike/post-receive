@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+if !ENV.include?('GIT_DIR')
+  raise "Not intended for command-line use"
+end
+
+$stdin.each_line do |line|
+  oldsha, newsha, refname = line.chomp.split(' ')
+  if refname =~ %r{^refs/tags/(ci_.+)}
+    tagname = $1
+    commit, tagger = %x{git for-each-ref --format="%(object) %(taggeremail)" #{refname}}.chomp.split(' ')
+    tagger.gsub!(%r{[<>]}, '')
+    message = %x{git for-each-ref --format="%(contents)" #{commit}}
+    branch = %x{git branch --contains #{commit}}.strip
+
+    localpart = tagger.gsub(%r{@.+}, '')
+    if tagname !~ %r{^ci_#{localpart}(?:_|$)}
+      puts "WARNING: Ignoring tag #{tagname} because it does not contain #{localpart}"
+    elsif branch.size == 0
+      puts "WARNING: Ignoring tag #{tagname} because it references unpushed commit #{commit}"
+    elsif branch =~ %r{^ci_.+_(workbench_.+)}
+      workbench = $1
+      puts "Scheduling integration of #{commit} from #{branch} into #{workbench} for #{tagger} with message:"
+      puts message
+    else
+      puts "WARNING: Could not map branch #{branch} to a workbench branch"
+    end
+  end
+end
