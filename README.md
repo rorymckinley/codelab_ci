@@ -10,13 +10,20 @@ Teh Plan
 * Each team member can commit and push as vigorously as they please on their CI
   branch, using sloppy, private commit messages along the way.
 * When a team member wants to share their changes on the workbench, they:
-  * git tag -af ci. The tag message should be the message desired for the
-    squashed merge into the workbench branch.
+  * git tag -af ci\_followed\_by\_anything. The tag message should be the 
+    message desired for the squashed merge into the workbench branch. The
+    tag must not be duplicated across "users"
   * git push -t
-* The update hook on the server handles the push as follows:
-  * Get out of the way unless sha1-new is tagged as ci.
-  * Select the workbench branch by naming convention: strip off ci\_[^\_]\+\_
-    from the CI branch.
+* The post-receive hook on the server handles the push as follows:
+  * Checks STDIN for a refname that is refs/tags/ci\_followed\_by\_anything
+  * If it finds a suitable refname, it finds the commit linked to the tag 
+    (using the refname not the sha of the tag to ensure that we always get
+    the latest commit for that tag). Use:
+    git for-each-ref --format="%(object) %(taggeremail)" refs/tags/ci
+  * Using the commit, it finds the branch that contains the commit.
+    Using: git branch --contains commit_sha
+  * It tries to lookup a workbench branch via the naming convention:
+    strip off ci\_[^\_]\+\_ from the CI branch.
   * Schedule a test-and-merge operation from the CI branch to HEAD on the
     workbench branch.
 * The test-and-merge operation works like this:
@@ -29,7 +36,7 @@ Teh Plan
   * Run the configured validator and abort with notification if it fails.
   * git push without -t, because we don't want the ci branch to make it back
     into the workbench branch, which would cause havoc.
-  * Notify the configured team address, or the author address.
+  * Notify the tagger of failure or success.
 
 Ideas
 -----
@@ -42,19 +49,3 @@ Ideas
   our presentation client.
 * The hook should call out to our workbench-hook gem, which itself calls out to
   our workbench-validator gem. Gem names need to be sexier.
-
-Git-hooks
----------
-
-* Looks like the post-receive hook is better suited for our purposes than the
-  update hook. The update hook fires once per ref being pushed --> e.g. once
-  for the branch and once for the tag (the tag does not travel with the branch).
-  This makes the hook logic as follows:
-  * Get refs from STDIN
-  * Check if one of the refs passed is refs/tags/ci
-  * If it is pick the new shas from the branches pushed (refs/heads) and check
-    each one to see if the tag contains it, using something like 
-    system("git tag --contains #{new_sha} | grep ci")
-  * If the new sha is contained by the tag, then pass it on to the validator
-  * What if the tag is pushed after the sha is pushed?
-
