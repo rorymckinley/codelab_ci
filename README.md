@@ -56,4 +56,5 @@ Git-hooks
     each one to see if the tag contains it, using something like 
     system("git tag --contains #{new_sha} | grep ci")
   * If the new sha is contained by the tag, then pass it on to the validator
+  * What if the tag is pushed after the sha is pushed?
 
