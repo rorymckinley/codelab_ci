@@ -54,6 +54,21 @@ Teh Plan
     into the workbench branch, which would cause havoc.
   * Notify the tagger of failure or success.
 
+The rather finnicky queuing and scheduling approaches are the result of a few
+evening sessions where we got bashed around by a few constraints:
+
+* Parallel builds for the same workbench branch are tricky. Two concurrent
+  builds are guaranteed to be missing commits in each other's trees, and so
+  even if the squashed commits could somehow be push/pulled into coexistence
+  in the workbench branch after validation, you'd end up with a workbench
+  branch that had not been tested exactly as committed! We could introduce
+  speculative parallel builds as an optimization, but that's more work than
+  we can take on in the time available.
+* Team members should not be able to completely starve each other out of the
+  CI system without being arseholes. Approximate fairness.
+* We wanted to waste as little time as possible on superceded commits from
+  the same tagger.
+
 Ideas
 -----
 
