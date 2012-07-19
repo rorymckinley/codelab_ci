@@ -24,12 +24,28 @@ Teh Plan
     Using: git branch --contains commit_sha
   * It tries to lookup a workbench branch via the naming convention:
     strip off ci\_[^\_]\+\_ from the CI branch.
-  * Schedule a test-and-merge operation from the CI branch to HEAD on the
-    workbench branch.
-* The test-and-merge operation works like this:
+  * Write a merge request file, whose name is unique, into the configured queue
+    directory. It contains:
+    * tagger's identity (taggeremail?)
+    * tag sha
+    * commit sha
+    * workbench branch name
+* The scheduler is a once-a-minute cron job (locked against itself by rlock
+  (from https://github.com/ahoward/lockfile):
+  * Discover all merge requests in the queue.
+  * Find the tagger and workbench of the oldest merge request.
+  * Find that tagger's newest merge request for the same workbench and kick
+    off a validate-and-merge process for it.
+  * Delete all other merge requests for that tagger and branch (leaving the one
+    we just kicked off).
+  * Until the configured concurrent process limit is reached, find the tagger
+    and workbench of the next oldest merge request and repeat the process.
+    Workbenches and merge requests already kicked off in this run are excluded
+    from consideration.
+  * If any processes were kicked off, Process.wait. :-)
+* The validate-and-merge operation works like this:
   * Check out the workbench branch.
-  * Squashed merge the commit tagged as ci on the CI branch, constructing the
-    commit message as follows:
+  * Squashed merge the commit sha, constructing the commit message as follows:
       * Use the configured CI committer name and committer address.
       * Use the author name and author address from the tagged commit.
       * Use the tag annotation as the commit message for the merge.
