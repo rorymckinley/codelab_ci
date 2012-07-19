@@ -15,7 +15,7 @@ end
 
 workbenches.sort! { |x,y| x[:earliest_request] <=> y[:earliest_request] }
 
-# Assume we only have one worker - no forking for now
+# Assume we only have one worker - no forking for now - so just pick the first workbench
 
 workbench = workbenches.first[:workbench]
 
@@ -26,6 +26,8 @@ requests.reject! { |request| [".", ".."].include? request }
 requests.sort! do |first_request, second_request|
   File.mtime(File.join(workbench_dir, workbench, first_request)) <=> File.mtime(File.join(workbench_dir, workbench, second_request))
 end
+
+# For testing purposes all the file contains is the name of the committer
 
 committer = IO.read(File.join(workbench_dir, workbench, requests.first)).chomp
 
