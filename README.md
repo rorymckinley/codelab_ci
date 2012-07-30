@@ -16,6 +16,11 @@ Wikipedia says it implements:
 > * replacing the traditional practice of applying quality control *after*
 >   completing *all* development.
 
+John Feminella says:
+
+> Agile technologies like CI depend first and foremost on the people whose
+> efforts they support.
+
 Teh Plan
 --------
 

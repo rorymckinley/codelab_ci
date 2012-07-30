@@ -9,6 +9,7 @@ Part: The First (5 minutes) --> Rory McKinley
 Part: the Second (20 minutes) --> Sheldon Hearn
 ================
 * CI as a discipline, rather than a tool.
+  + Wikipedia defn & insight from John Feminella (in README.md)
   + Requirements
     + Human requirements
       + Organizational/project support for the practice
