@@ -17,7 +17,7 @@ Part: the Second (20 minutes) --> Sheldon Hearn
       + Willingness to communicate
       + Incremental changes
     + Technical requirements
-      + DVCS
+      + DVCS (favour mainline, avoid branches)
       + Automated build
       + Self-testing build
       + Everyone Commits To the Mainline Every Day
