@@ -40,6 +40,7 @@ Part: the Second (20 minutes) --> Sheldon Hearn
     + Well-developed test-suite required to achieve automated testing advantages
     + Hardware costs for build machines can be significant
 * Why we rolled our own
+  + Slow tests, optimistic integration
   + Instead of using jenkins
   + You do not have to DIY
 
