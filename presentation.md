@@ -9,6 +9,35 @@ Part: The First (5 minutes) --> Rory McKinley
 Part: the Second (20 minutes) --> Sheldon Hearn
 ================
 * CI as a discipline, rather than a tool.
+  + Requirements
+    + Human requirements
+      + Organizational/project support for the practice
+      + Buy-in from team members (willing to try new things?)
+      + Willingness to communicate
+      + Incremental changes
+    + Technical requirements
+      + DVCS
+      + Automated build
+      + Self-testing build
+      + Everyone Commits To the Mainline Every Day
+      + Every Commit Should Build the Mainline on an Integration Machine
+      + Keep the Build Fast (the point of CI is rapid feedback)
+      + Test in a Clone of the Production Environment
+      + Make it Easy for Anyone to Get the Latest Executable
+      + Everyone can see what is happening
+      + Automate Deployment (more important for build-driven software)
+  + Advantages
+    + Every revert is a step back to known goodness
+    + Early warning of conflicting changes
+    + Constant availability of a deployable build
+    + Immediate feedback on the quality, functionality, or system-wide impact
+      of changes.
+    + Frequent code check-in demands modular code and disciplined refactoring.
+    + Less frustration, potential for less conflict.
+  + Disadvantages
+    + Initial setup time required
+    + Well-developed test-suite required to achieve automated testing advantages
+    + Hardware costs for build machines can be significant
 * Why we rolled our own
   + Instead of using jenkins
   + You do not have to DIY
