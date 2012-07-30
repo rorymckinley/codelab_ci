@@ -51,7 +51,12 @@ Part: the Third (20 minutes) --> Rory McKinley
   + What is a workbench branch
   + What is a private branch
   + What is a timeline
-  + Convention over configuration - rely on tags - "easy" to link
+  + Principles for requestint integration
+    * Running the CI on the private branch is voluntary
+    * Decision to integrate can be done post-commit and does not require a new commit
+    * Integration is done before merging into a workbench branch
+    * When the dev is ready for integration she can specify a pretty commit message
+    * Convention over configuration - rely on tags - "easy" to link
   + Parallel builds on workbench branch not allowed - too complex for now - ito commits
   + First come, first serve, but run the freshest commit
 * How we modeled that process in code
