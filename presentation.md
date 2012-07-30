@@ -22,6 +22,7 @@ Part: the Second (20 minutes) --> Sheldon Hearn
       + Self-testing build
       + Everyone Commits To the Mainline Every Day
       + Every Commit Should Build the Mainline on an Integration Machine
+        + (when this is automatic, you are doing Automated CI)
       + Keep the Build Fast (the point of CI is rapid feedback)
       + Test in a Clone of the Production Environment
       + Make it Easy for Anyone to Get the Latest Executable
